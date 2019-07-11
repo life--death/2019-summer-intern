@@ -1,0 +1,2 @@
+ipconfig -all >"C:\ipconfig_all.txt"
+计算机\HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Session Manager\Environment
