@@ -1,0 +1,1 @@
+setx PATH "%PATH%;C:\Users\WDAGUtilityAccount\Desktop\python-3.7.3-embed-amd64" -m
