@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\shell\CommandPrompt]
+
+@="cmd here"
+
+[HKEY_CLASSES_ROOT\Directory\shell\CommandPrompt\Command]
+
+@="cmd.exe /k cd \"%1\""
