@@ -1,0 +1,8 @@
+name = input("please input the location: ")
+new_file = open("C:\\address.bat","w")
+new_file.write("set PM=C:\\Users\\WDAGUtilityAccount\\Desktop\\ProcessMonitor\\procmon.exe\n")
+new_file.write("start %PM% /AcceptEula /quiet /minimized\n")
+new_file.write("%PM% /waitforidle /AcceptEula\n")
+new_file.write("start /wait "+ name + "\n")
+new_file.write("%PM% /terminate /AcceptEula\n")
+new_file.close() 
