@@ -42,19 +42,24 @@ if __name__ == '__main__':
     print('unit test')
     import pprint
     import time
-    fip=open("c:/summer_camp/code/clientip.txt")
+    import os
+    thispath=thispath=os.path.abspath('.')
+    fip=open("clientip.txt")
     server_ip=fip.readline().strip()
     fip.close()
     server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
     ip=get_host_ip()
     while True:
-        exefile = 'chrome'
+        cmdType='1'# 1:open url; 2:run a exe; 3
+        exefile = 'microsoft-edge:'
         url = "https://www.google.com"
-        cmd = f"start {exefile} --new-windows {url}"
-        resstr=send_request(server_config, {'request': cmd, 'time': time.time()})
+        cmd = f"start microsoft-edge:{url}"  # chrome
+        # cmd = f"start chrome --new-windows {url}" #chrome
+        # exestr="C:\summer_camp\source\\ChromeSetup.exe /silent /install"
+        # cmd="ChromeSetup.exe /silent /install"
+        resstr=send_request(server_config, {'cmdType': cmdType, 'request': cmd, 'time': time.time()})
         if resstr:
             pprint.pprint(resstr)
             break
         time.sleep(0.5)
-
 
