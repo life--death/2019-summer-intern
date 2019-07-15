@@ -95,7 +95,10 @@ if __name__ == '__main__':
     print('unit test')
     import pprint
     import time
-    fip=open("c:/summer_camp/code/serverip.txt")
+    import os
+    thispath=os.path.abspath('.')
+    print(thispath)
+    fip=open(f"{thispath}\serverip.txt")
     server_ip=fip.readline().strip()
     fip.close()
     server_config = {'address': server_ip, 'port': 9999, 'auth_key': b'A8rhWNHR2p'}
@@ -119,5 +122,10 @@ if __name__ == '__main__':
         put_response(req_uid, {'response': 'ok', 'time': time.time()})
         import os
         cmd=req['request']
+        if req['cmdType']=='2':
+            cmd=f"{thispath}\source\{cmd}"
+            # print(cmd)
+        elif req['cmdType']=='1':
+            pass
         # cmd=cmd.split(',')[0].split(':')[1]
         os.system(cmd)
