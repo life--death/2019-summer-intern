@@ -39,6 +39,7 @@ def get_host_ip():
     return ip
 
 if __name__ == '__main__':
+
     print('unit test')
     import pprint
     import time

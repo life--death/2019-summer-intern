@@ -92,7 +92,7 @@ def get_host_ip():
     return ip
 
 if __name__ == '__main__':
-    print('unit test')
+    print('client running')
     import pprint
     import time
     import os
