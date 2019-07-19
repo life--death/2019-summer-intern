@@ -58,13 +58,33 @@ def put_response(uid, response):
     response_queue = queue_map.pop(uid)
     response_queue.put(response)
 
+def get_host_ip():
+    """
+    查询本机ip地址
+    :return: ip
+    """
+    import socket
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+    return ip
 
 if __name__ == '__main__':
-    print('unit test')
+    print('host server running')
     import pprint
     import time
     start_server()
+    fip=open("serverip.txt","w")
+    fip.write(get_host_ip())
+    fip.close()
     while True:
         req_uid, req = get_request()
         pprint.pprint(req)
         put_response(req_uid, {'response': 'test_response', 'time': time.time()})
+        fip = open("clientip.txt", "w")
+        fip.write(req['request'])
+        fip.close()
+        break

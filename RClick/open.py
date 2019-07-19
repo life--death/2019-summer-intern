@@ -61,5 +61,5 @@ if __name__ == '__main__':
         if resstr:
             pprint.pprint(resstr)
             break
-        time.sleep(0.5)
+        # time.sleep(0.5)
 
