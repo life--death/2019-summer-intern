@@ -47,6 +47,37 @@ def get_host_ip():
         s.close()
     return ip
 
+def sendfile(s):
+    ss = s.strip().split("/")[-1]
+    if os.path.exists(s):
+        try:
+            res = shutil.copy(s, f'C:\\summer_camp\\2019-summer-intern\\source\\{ss}')
+        except Exception as e:
+            print(e)
+    fip = open("C:\summer_camp\\2019-summer-intern\\clientip.txt")
+    server_ip = fip.readline().strip()
+    fip.close()
+    server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
+    while True:
+        cmdType = '2'  # 1:open url; 2:run a exe; 3
+        cmd = ss
+        resstr = send_request(server_config, {'cmdType': cmdType, 'request': cmd, 'time': time.time()})
+        if resstr:
+            pprint.pprint(resstr)
+            break
+
+def sendurl(url):
+    fip = open("C:\summer_camp\\2019-summer-intern\clientip.txt")
+    server_ip = fip.readline().strip()
+    fip.close()
+    server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
+    while True:
+        cmdType = '1'  # 1:open url; 2:run a exe; 3
+        cmd = f"start microsoft-edge:{url}"  # chrome
+        resstr = send_request(server_config, {'cmdType': cmdType, 'request': cmd, 'time': time.time()})
+        if resstr:
+            pprint.pprint(resstr)
+            break
 
 class SystemTray(QSystemTrayIcon):
 
@@ -118,43 +149,14 @@ class SystemTray(QSystemTrayIcon):
         # upload_widget.setLayout(layout)
         # self.upload_action.setDefaultWidget(upload_widget)
 
+
     def searchInSanbox(self):
         print('hello')
         url = self.searchLine.text()
         if url == '':
             url = 'https://www.baidu.com'
         # self.searchLine.setText(None)
-        import os
-        # cmd = f"start microsoft-edge:{url}"
-        # os.popen(cmd)
-        # print(url)
-        # print('unit test')
-
-        # s = "C:\\Users\\ztp\\Desktop\\Shadowsocks-4.1.6\\Shadowsocks.exe"
-        # s = str(sys.argv[1])
-        # print(s)
-        # ss = s.strip().split("\\")[-1]
-        # if os.path.exists(s):
-        #     res = shutil.copy(s, f'C:\summer_camp\source\\{ss}')
-        # thispath = os.path.abspath('.')
-        fip = open("C:\summer_camp\\2019-summer-intern\clientip.txt")
-        server_ip = fip.readline().strip()
-        fip.close()
-        server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
-        ip = get_host_ip()
-        while True:
-            cmdType = '1'  # 1:open url; 2:run a exe; 3
-            exefile = 'microsoft-edge:'
-            # url = "https://www.google.com"
-            cmd = f"start microsoft-edge:{url}"  # chrome
-            # cmd = f"start chrome --new-windows {url}" #chrome
-            # exestr="C:\summer_camp\source\\ChromeSetup.exe /silent /install"
-            # cmd=ss
-            # cmd = "ChromeSetup.exe /silent /install"
-            resstr = send_request(server_config, {'cmdType': cmdType, 'request': cmd, 'time': time.time()})
-            if resstr:
-                pprint.pprint(resstr)
-                break
+        sendurl(url)
 
     def getfile(self):
         q_file = QFileDialog()
@@ -163,40 +165,8 @@ class SystemTray(QSystemTrayIcon):
         if q_file.exec():
             filenames = q_file.selectedFiles()
             print(filenames[0])
-
-            print('unit test')
-
-
-            # s = "C:\\Users\\ztp\\Desktop\\Shadowsocks-4.1.6\\Shadowsocks.exe"
-            # s = str(sys.argv[1])
-            # print(s)
             s=filenames[0]
-            ss = s.strip().split("/")[-1]
-            if os.path.exists(s):
-                try:
-                    res = shutil.copy(s, f'C:\\summer_camp\\2019-summer-intern\\source\\{ss}')
-                except Exception as e:
-                    print(e)
-            thispath = os.path.abspath('.')
-            fip = open("C:\summer_camp\\2019-summer-intern\\clientip.txt")
-            server_ip = fip.readline().strip()
-            fip.close()
-            server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
-            ip = get_host_ip()
-            while True:
-                cmdType = '2'  # 1:open url; 2:run a exe; 3
-                exefile = 'microsoft-edge:'
-                url = "https://www.google.com"
-                cmd = f"start microsoft-edge:{url}"  # chrome
-                # cmd = f"start chrome --new-windows {url}" #chrome
-                # exestr="C:\summer_camp\source\\ChromeSetup.exe /silent /install"
-                cmd=ss
-                # cmd = "ChromeSetup.exe /silent /install"
-                resstr = send_request(server_config, {'cmdType': cmdType, 'request': cmd, 'time': time.time()})
-                if resstr:
-                    pprint.pprint(resstr)
-                    break
-                # time.sleep(0.5)
+            sendfile(s)
 
     def addActions(self):
         self.menu.addAction(self.edge_action)
@@ -213,7 +183,7 @@ class window(QWidget):
 if __name__ == '__main__':
     import sys
 
-    # os.system("C:\\summer_camp\\2019-summer-intern\\sb.wsb")
+    os.system("C:\\summer_camp\\2019-summer-intern\\sb.wsb")
     os.system("python C:\\summer_camp\\2019-summer-intern\\ipc_server.py")
 
     print("please wait sandbox running!")
