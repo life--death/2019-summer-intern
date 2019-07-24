@@ -213,7 +213,7 @@ class window(QWidget):
 if __name__ == '__main__':
     import sys
 
-    os.system("C:\\Users\\ztp\\Desktop\\sb.wsb")
+    # os.system("C:\\Users\\ztp\\Desktop\\sb.wsb")
     os.system("python C:\\summer_camp\\code\\ipc_server.py")
 
     print("please wait sandbox running!")

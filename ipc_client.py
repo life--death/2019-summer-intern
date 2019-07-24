@@ -1,7 +1,9 @@
 from multiprocessing.managers import BaseManager
+import multiprocessing
 import threading
 import uuid
 from multiprocessing import Queue
+import os
 
 class ServerManager(BaseManager):
     pass
@@ -91,11 +93,18 @@ def get_host_ip():
         s.close()
     return ip
 
+def runSubcmd(arg):
+    # print("-------")
+    # print(arg)
+    os.system(arg)
+
+def runrest():
+    print("runtest")
+
 if __name__ == '__main__':
     print('client running')
     import pprint
     import time
-    import os
     thispath=os.path.abspath('.')
     print(thispath)
     fip=open(f"{thispath}\serverip.txt")
@@ -114,7 +123,7 @@ if __name__ == '__main__':
     print('sb server')
     import pprint
     import time
-
+    import subprocess
     start_server()
     while True:
         req_uid, req = get_request()
@@ -127,5 +136,10 @@ if __name__ == '__main__':
             # print(cmd)
         elif req['cmdType']=='1':
             pass
+        psub=multiprocessing.Process(target=runSubcmd, args=(cmd,))
+        psub.start()
         # cmd=cmd.split(',')[0].split(':')[1]
-        os.system(cmd)
+        # with open("C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\code\\subrun.bat","w") as f:
+        #     print(cmd)
+        #     f.write(cmd)
+        # os.system('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\code\\subrun.bat')
