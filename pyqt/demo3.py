@@ -174,7 +174,7 @@ class SystemTray(QSystemTrayIcon):
             ss = s.strip().split("/")[-1]
             if os.path.exists(s):
                 try:
-                    res = shutil.copy(s, f'C:\summer_camp\source\\{ss}')
+                    res = shutil.copy(s, f'C:\\summer_camp\\2019-summer-intern\\source\\{ss}')
                 except Exception as e:
                     print(e)
             thispath = os.path.abspath('.')
@@ -213,7 +213,7 @@ class window(QWidget):
 if __name__ == '__main__':
     import sys
 
-    os.system("C:\\Users\\ztp\\Desktop\\sb.wsb")
+    # os.system("C:\\summer_camp\\2019-summer-intern\\sb.wsb")
     os.system("python C:\\summer_camp\\2019-summer-intern\\ipc_server.py")
 
     print("please wait sandbox running!")

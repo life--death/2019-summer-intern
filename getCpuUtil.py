@@ -7,7 +7,7 @@ cpu=psutil.cpu_percent(interval=0.5,percpu=False)
 memory=psutil.virtual_memory().percent
 t=time.time()
 # print('time',t,'cpu:',cpu,'memory:',memory)
-with open('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\code\\cpu_util.txt','a') as f:
+with open('C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\cpu_util.txt','a') as f:
     f.write(f'{t} {cpu} {memory}\n')
 
 

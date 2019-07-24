@@ -99,10 +99,10 @@ def runSubcmd(arg):
     # print(arg)
     os.system(arg)
 def getCPUutil():
-    with open('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\cpu_util.txt', 'w') as f:
+    with open('C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\cpu_util.txt', 'w') as f:
         pass
     while True:
-        os.system('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\dist\\getCpuUtil.exe')
+        os.system('C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\dist\\getCpuUtil.exe')
         time.sleep(2)
 def runrest():
     print("runtest")
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     # thispath=os.path.abspath('.')
     # print(thispath)
     # fip=open(f"{thispath}\serverip.txt")
-    fip=open('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\serverip.txt')
+    fip=open('C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\serverip.txt')
     server_ip=fip.readline().strip()
     fip.close()
     server_config = {'address': server_ip, 'port': 9999, 'auth_key': b'A8rhWNHR2p'}
@@ -141,7 +141,7 @@ if __name__ == '__main__':
         import os
         cmd=req['request']
         if req['cmdType']=='2':
-            cmd=f"C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\source\{cmd}"
+            cmd=f"C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\source\{cmd}"
             # print(cmd)
         elif req['cmdType']=='1':
             pass
