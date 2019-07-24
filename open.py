@@ -46,8 +46,8 @@ if __name__ == '__main__':
     import os,shutil
     import sys
 
-    # s = "C:\\Users\\ztp\\Desktop\\Shadowsocks-4.1.6\\Shadowsocks.exe"
-    s = str(sys.argv[1])
+    s = "C:\\Users\\ztp\\Desktop\\Shadowsocks-4.1.6\\Shadowsocks.exe"
+    # s = str(sys.argv[1])
     # print(s)
     ss = s.strip().split("\\")[-1]
     if os.path.exists(s):

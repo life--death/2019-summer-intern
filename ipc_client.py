@@ -4,6 +4,7 @@ import threading
 import uuid
 from multiprocessing import Queue
 import os
+import time
 
 class ServerManager(BaseManager):
     pass
@@ -97,17 +98,23 @@ def runSubcmd(arg):
     # print("-------")
     # print(arg)
     os.system(arg)
-
+def getCPUutil():
+    with open('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\cpu_util.txt', 'w') as f:
+        pass
+    while True:
+        os.system('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\dist\\getCpuUtil.exe')
+        time.sleep(2)
 def runrest():
     print("runtest")
 
 if __name__ == '__main__':
     print('client running')
     import pprint
-    import time
-    thispath=os.path.abspath('.')
-    print(thispath)
-    fip=open(f"{thispath}\serverip.txt")
+
+    # thispath=os.path.abspath('.')
+    # print(thispath)
+    # fip=open(f"{thispath}\serverip.txt")
+    fip=open('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\serverip.txt')
     server_ip=fip.readline().strip()
     fip.close()
     server_config = {'address': server_ip, 'port': 9999, 'auth_key': b'A8rhWNHR2p'}
@@ -125,6 +132,8 @@ if __name__ == '__main__':
     import time
     import subprocess
     start_server()
+    getcuputil = multiprocessing.Process(target=getCPUutil, args=())
+    getcuputil.start()
     while True:
         req_uid, req = get_request()
         pprint.pprint(req)
@@ -138,8 +147,9 @@ if __name__ == '__main__':
             pass
         psub=multiprocessing.Process(target=runSubcmd, args=(cmd,))
         psub.start()
+
         # cmd=cmd.split(',')[0].split(':')[1]
-        # with open("C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\code\\subrun.bat","w") as f:
+        # with open("C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\subrun.bat","w") as f:
         #     print(cmd)
         #     f.write(cmd)
-        # os.system('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\code\\subrun.bat')
+        # os.system('C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\subrun.bat')

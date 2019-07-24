@@ -77,14 +77,15 @@ if __name__ == '__main__':
     import pprint
     import time
     start_server()
-    fip=open("serverip.txt","w")
+    thepath="C:\summer_camp\code"
+    fip=open(f"{thepath}\serverip.txt","w")
     fip.write(get_host_ip())
     fip.close()
     while True:
         req_uid, req = get_request()
         pprint.pprint(req)
         put_response(req_uid, {'response': 'test_response', 'time': time.time()})
-        fip = open("clientip.txt", "w")
+        fip = open(f"{thepath}\clientip.txt", "w")
         fip.write(req['request'])
         fip.close()
         break

@@ -137,7 +137,7 @@ class SystemTray(QSystemTrayIcon):
         # if os.path.exists(s):
         #     res = shutil.copy(s, f'C:\summer_camp\source\\{ss}')
         # thispath = os.path.abspath('.')
-        fip = open("C:\summer_camp\code\clientip.txt")
+        fip = open("C:\summer_camp\\2019-summer-intern\clientip.txt")
         server_ip = fip.readline().strip()
         fip.close()
         server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
@@ -178,7 +178,7 @@ class SystemTray(QSystemTrayIcon):
                 except Exception as e:
                     print(e)
             thispath = os.path.abspath('.')
-            fip = open("C:\summer_camp\code\clientip.txt")
+            fip = open("C:\summer_camp\\2019-summer-intern\\clientip.txt")
             server_ip = fip.readline().strip()
             fip.close()
             server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
@@ -213,8 +213,8 @@ class window(QWidget):
 if __name__ == '__main__':
     import sys
 
-    # os.system("C:\\Users\\ztp\\Desktop\\sb.wsb")
-    os.system("python C:\\summer_camp\\code\\ipc_server.py")
+    os.system("C:\\Users\\ztp\\Desktop\\sb.wsb")
+    os.system("python C:\\summer_camp\\2019-summer-intern\\ipc_server.py")
 
     print("please wait sandbox running!")
     app = QApplication(sys.argv)
