@@ -9,6 +9,6 @@ def xml_out(req:int,address:str):
     new_file.write("%PM% /terminate /AcceptEula \n")
     for temp in range(4):
         if req[temp] == 1:
-            new_file.write("%PM% /SaveApplyFilter  /SaveAs C:\\" + name + filter_dict[temp] +".csv " + "/Openlog C:\\" + name + ".pml " +  "/quiet /minimized /AcceptEula /LoadConfig C:\\Users\\WDAGUtilityAccount\\Desktop\\"  + filter_dict[temp]  " \n")
+            new_file.write("%PM% /SaveApplyFilter  /SaveAs C:\\" + name + filter_dict[temp] +".csv " + "/Openlog C:\\" + name + ".pml " +  "/quiet /minimized /AcceptEula /LoadConfig C:\\Users\\WDAGUtilityAccount\\Desktop\\"  + filter_dict[temp] + " \n")
             new_file.write("%PM% /minimized /terminate /AcceptEula \n")
             new_file.close() 
