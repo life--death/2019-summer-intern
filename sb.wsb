@@ -3,15 +3,11 @@
 <Networking></Networking>
 <MappedFolders>
 <MappedFolder>
-<HostFolder>C:\Users\Public\Downloads</HostFolder>
-<ReadOnly>true</ReadOnly>
-</MappedFolder>
-<MappedFolder>
-<HostFolder>C:\summer_camp</HostFolder>
+<HostFolder>C:\summer_camp\2019-summer-intern</HostFolder>
 <ReadOnly>false</ReadOnly>
 </MappedFolder>
 </MappedFolders>
 <LogonCommand>
-<Command>C:\users\WDAGUtilityAccount\Desktop\summer_camp\sb_client.bat</Command>
+<Command>C:\users\WDAGUtilityAccount\Desktop\2019-summer-intern\sb_client.bat</Command>
 </LogonCommand>
 </Configuration>

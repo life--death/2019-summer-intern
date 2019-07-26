@@ -1,1 +1,2 @@
-C:\Users\WDAGUtilityAccount\Desktop\summer_camp\python-3.7.3-embed-amd64\python C:\Users\WDAGUtilityAccount\Desktop\summer_camp\code\ipc_client.py
+cd C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\
+C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\lib_self\python-3.7.3-embed-amd64\python C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\ipc_client.py
