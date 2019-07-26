@@ -1,4 +1,5 @@
-def xml_out(req:int,address:str):
+def xml_out(req:str,address:str):
+    req = str(req)
     name = address.split("\\")[-1]
     filter_dict = {0:"write-action.pmc",1:"write-reg.pmc",2:"TCP-catch.pmc",3:"process-create.pmc"}
     new_file = open("C:\\address.bat","w")
@@ -8,7 +9,11 @@ def xml_out(req:int,address:str):
     new_file.write("start /wait "+ address + "\n")
     new_file.write("%PM% /terminate /AcceptEula \n")
     for temp in range(4):
-        if req[temp] == 1:
+        if req[temp] == "1":
+            print("print hello")
             new_file.write("%PM% /SaveApplyFilter  /SaveAs C:\\" + name + filter_dict[temp] +".csv " + "/Openlog C:\\" + name + ".pml " +  "/quiet /minimized /AcceptEula /LoadConfig C:\\Users\\WDAGUtilityAccount\\Desktop\\"  + filter_dict[temp] + " \n")
             new_file.write("%PM% /minimized /terminate /AcceptEula \n")
-            new_file.close() 
+    new_file.write("exit")
+    new_file.close() 
+if __name__ == '__main__':
+    xml_out(1111,"C:\\Users\\WDAGUtilityAccount\\Desktop\\netease.exe")
