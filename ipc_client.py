@@ -5,6 +5,7 @@ import uuid
 from multiprocessing import Queue
 import os
 import time
+import threading
 
 class ServerManager(BaseManager):
     pass
@@ -107,6 +108,29 @@ def getCPUutil():
 def runrest():
     print("runtest")
 
+def xml_out(req,address):
+    req = str(req)
+    name = address.split("\\")[-1]
+    filter_dict = {0: "write-action.pmc", 1: "write-reg.pmc", 2: "TCP-catch.pmc", 3: "process-create.pmc"}
+    new_file = open("C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\address.bat", "w")
+    new_file.write("set PM=C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\ProcessMonitor\\procmon.exe\n")
+    new_file.write("start %PM% /AcceptEula /quiet /minimized /backingfile C:\\" + name + ".pml \n")
+    new_file.write("%PM%  /waitforidle /AcceptEula\n")
+    new_file.write("start /wait " + address + "\n")
+    new_file.write("%PM% /terminate /AcceptEula \n")
+    new_file.write("exit")
+    for temp in range(4):
+        if req[temp] == "1":
+            # print("print hello")
+            new_file.write("%PM% /SaveApplyFilter  /SaveAs C:\\" + name + filter_dict[
+                temp] + ".csv " + "/Openlog C:\\" + name + ".pml " + "/quiet /minimized /AcceptEula /LoadConfig C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\filter_library\\" + filter_dict[temp] + " \n")
+            new_file.write("%PM% /minimized /terminate /AcceptEula \n")
+    new_file.close()
+    os.system("C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\address.bat")
+    print('bat done')
+    with open('C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\doneflag.txt','w') as f:
+        f.write('done')
+
 if __name__ == '__main__':
     print('client running')
     import pprint
@@ -141,12 +165,18 @@ if __name__ == '__main__':
         import os
         cmd=req['request']
         if req['cmdType']=='2':
-            cmd=f"C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\source\{cmd}"
+            cmd=f"C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\source\\{cmd}"
+            # psub=multiprocessing.Process(target=runSubcmd, args=(cmd,))
+            # psub.start()
+            th1 = threading.Thread(target=xml_out, args=(1111, cmd,))
+            th1.start()
             # print(cmd)
         elif req['cmdType']=='1':
-            pass
-        psub=multiprocessing.Process(target=runSubcmd, args=(cmd,))
-        psub.start()
+            th2=threading.Thread(target=runSubcmd, args=(cmd,))
+            th2.start()
+            # pass
+        # psub=multiprocessing.Process(target=runSubcmd, args=(cmd,))
+        # psub.start()
 
         # cmd=cmd.split(',')[0].split(':')[1]
         # with open("C:\\Users\\WDAGUtilityAccount\\Desktop\\summer_camp\\2019-summer-intern\\subrun.bat","w") as f:

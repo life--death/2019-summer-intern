@@ -77,7 +77,7 @@ if __name__ == '__main__':
     import pprint
     import time
     start_server()
-    thepath="C:\summer_camp\code"
+    thepath="C:\\summer_camp\\2019-summer-intern\\"
     fip=open(f"{thepath}\serverip.txt","w")
     fip.write(get_host_ip())
     fip.close()
