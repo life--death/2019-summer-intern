@@ -237,7 +237,7 @@ class Ui_Open(object):
         self.toolButton_3.clicked['bool'].connect(self.lineEdit.show)
         self.lineEdit.returnPressed.connect(self.lineEdit.hide)
         QtCore.QMetaObject.connectSlotsByName(Open)
-
+        self.lineEdit.hide()
 
     def retranslateUi(self, Open):
         _translate = QtCore.QCoreApplication.translate

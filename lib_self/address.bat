@@ -1,13 +1,14 @@
-set PM=C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\lib_self\ProcessMonitor\procmon.exe
-start %PM% /AcceptEula /quiet /minimized /backingfile C:\netease.exe.pml 
+set PM=C:\ProcessMonitor\procmon.exe
+start %PM% /AcceptEula /quiet /minimized /backingfile c:\netease.exe.pml 
 %PM%  /waitforidle /AcceptEula
 start /wait C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\source\netease.exe
 %PM% /terminate /AcceptEula 
-%PM% /SaveApplyFilter  /SaveAs C:\netease.exewrite-action.pmc.csv /Openlog C:\netease.exe.pml /quiet /minimized /AcceptEula /LoadConfig C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\lib_self\filter_library\write-action.pmc 
+%PM% /SaveApplyFilter  /SaveAs c:\write-action.pmc.csv /Openlog c:\netease.exe.pml /quiet /minimized /AcceptEula /LoadConfig C:\write-action.pmc 
 %PM% /minimized /terminate /AcceptEula 
-%PM% /SaveApplyFilter  /SaveAs C:\netease.exewrite-reg.pmc.csv /Openlog C:\netease.exe.pml /quiet /minimized /AcceptEula /LoadConfig C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\lib_self\filter_library\write-reg.pmc 
+%PM% /SaveApplyFilter  /SaveAs c:\write-reg.pmc.csv /Openlog c:\netease.exe.pml /quiet /minimized /AcceptEula /LoadConfig C:\write-reg.pmc 
 %PM% /minimized /terminate /AcceptEula 
-%PM% /SaveApplyFilter  /SaveAs C:\netease.exeTCP-catch.pmc.csv /Openlog C:\netease.exe.pml /quiet /minimized /AcceptEula /LoadConfig C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\lib_self\filter_library\TCP-catch.pmc 
+%PM% /SaveApplyFilter  /SaveAs c:\TCP-catch.pmc.csv /Openlog c:\netease.exe.pml /quiet /minimized /AcceptEula /LoadConfig C:\TCP-catch.pmc 
 %PM% /minimized /terminate /AcceptEula 
-%PM% /SaveApplyFilter  /SaveAs C:\netease.exeprocess-create.pmc.csv /Openlog C:\netease.exe.pml /quiet /minimized /AcceptEula /LoadConfig C:\Users\WDAGUtilityAccount\Desktop\2019-summer-intern\lib_self\filter_library\process-create.pmc 
+%PM% /SaveApplyFilter  /SaveAs c:\process-create.pmc.csv /Openlog c:\netease.exe.pml /quiet /minimized /AcceptEula /LoadConfig C:\process-create.pmc 
 %PM% /minimized /terminate /AcceptEula 
+exit

@@ -3,7 +3,7 @@ import multiprocessing
 import threading
 import uuid
 from multiprocessing import Queue
-import os
+import os,shutil
 import time
 import threading
 
@@ -105,29 +105,36 @@ def getCPUutil():
     while True:
         os.system('C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\dist\\getCpuUtil.exe')
         time.sleep(2)
+
 def runrest():
     print("runtest")
 
 def xml_out(req,address):
     req = str(req)
+    addpath="C:\\Users\\WDAGUtilityAccount\\Desktop\\"
+    # addpath="c:\\"
     name = address.split("\\")[-1]
     filter_dict = {0: "write-action.pmc", 1: "write-reg.pmc", 2: "TCP-catch.pmc", 3: "process-create.pmc"}
-    new_file = open("C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\address.bat", "w")
-    new_file.write("set PM=C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\ProcessMonitor\\procmon.exe\n")
-    new_file.write("start %PM% /AcceptEula /quiet /minimized /backingfile C:\\" + name + ".pml \n")
+    new_file = open("C:\\Users\\WDAGUtilityAccount\\Desktop\\address.bat", "w")
+    new_file.write("set PM=C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\ProcessMonitor\\procmon.exe\n")
+    new_file.write(f"start %PM% /AcceptEula /quiet /minimized /backingfile {addpath}" + name + ".pml \n")
     new_file.write("%PM%  /waitforidle /AcceptEula\n")
     new_file.write("start /wait " + address + "\n")
     new_file.write("%PM% /terminate /AcceptEula \n")
-    new_file.write("exit")
+
     for temp in range(4):
         if req[temp] == "1":
             # print("print hello")
-            new_file.write("%PM% /SaveApplyFilter  /SaveAs C:\\" + name + filter_dict[
-                temp] + ".csv " + "/Openlog C:\\" + name + ".pml " + "/quiet /minimized /AcceptEula /LoadConfig C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\filter_library\\" + filter_dict[temp] + " \n")
+            new_file.write(f"%PM% /SaveApplyFilter  /SaveAs {addpath}" + filter_dict[
+                temp] + ".csv " + f"/Openlog {addpath}" + name + ".pml " + "/quiet /minimized /AcceptEula /LoadConfig C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\filter_library\\" + filter_dict[temp] + " \n")
             new_file.write("%PM% /minimized /terminate /AcceptEula \n")
+    new_file.write("exit")
     new_file.close()
-    os.system("C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\address.bat")
+    os.system("C:\\Users\\WDAGUtilityAccount\\Desktop\\address.bat")
     print('bat done')
+    for temp in range(4):
+        shutil.move(f"C:\\Users\\WDAGUtilityAccount\\Desktop\\{filter_dict[temp]}.csv",f"C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\pmc\\{filter_dict[temp]}.csv")
+
     with open('C:\\Users\\WDAGUtilityAccount\\Desktop\\2019-summer-intern\\lib_self\\doneflag.txt','w') as f:
         f.write('done')
 
