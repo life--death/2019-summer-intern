@@ -1,193 +1,129 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QSystemTrayIcon, QAction, QMenu,\
-    qApp, QMessageBox, QWidgetAction, QPushButton, QLabel, QHBoxLayout, QVBoxLayout, QLineEdit, QGridLayout,\
-    QFileDialog
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import QCoreApplication, Qt, QSize, QDir
-import os
-from multiprocessing.managers import BaseManager
-import threading
-import uuid
-from multiprocessing import Queue
-import pprint
-import time
-import os, shutil
-import sys
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QTreeWidgetItem
+from PyQt5.QtGui import QPixmap
+from mainUI import MainUI
+from csv_reader import *
 
+def DFS(father: node, son: node, father_node: QTreeWidgetItem,node_set:dict):
+    if len(son.child) != 0:
+        for element in son.child:
+            print(element.name)
+            if node_set.get(son.pid) == None:
+                son_node = QTreeWidgetItem()
+                son_node.setText(0, son.name)
+                son_node.setText(1, son.pid)
+                node_set[son.pid] = son_node
+                DFS(son,element,son_node,node_set)
+                father_node.addChild(son_node)
+            else:
+                temp_node = node_set.get(son.pid)
+                DFS(son, element, temp_node,node_set)
+    else:
+        son_node = QTreeWidgetItem()
+        son_node.setText(0, son.name)
+        son_node.setText(1, son.pid)
+        node_set[son.pid] = son_node
+        father_node.addChild(son_node)
 
+class window(QMainWindow, MainUI):
+    def __init__(self):
+        super(window, self).__init__()
+        self.setupUi(self)
+        self.stackedWidget.setCurrentIndex(2)
+        self.showInit()
+        #ti = SystemTray(self)
+        #ti.show()
 
-class ServerManager(BaseManager):
-    pass
+    def showInit(self):
+        pass
+        # self.textBrowser.setText('Init')
 
-
-ServerManager.register('get_request_queue')
-ServerManager.register('get_response_queue')
-
-
-def send_request(config, req):
-    server = ServerManager(address=(config['address'], config['port']), authkey=config['auth_key'])
-    server.connect()
-    response_queue = server.get_response_queue()
-    uid = response_queue.get()
-    request_queue = server.get_request_queue()
-    request_queue.put((uid, req))
-    return response_queue.get()
-
-def get_host_ip():
-    """
-    查询本机ip地址
-    :return: ip
-    """
-    import socket
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        ip = s.getsockname()[0]
-    finally:
-        s.close()
-    return ip
-
-def sendfile(s):
-    ss = s.strip().split("/")[-1]
-    if os.path.exists(s):
+    def readpmc(self,c):
+        self.textBrowser.clear()
         try:
-            res = shutil.copy(s, f'C:\\summer_camp\\2019-summer-intern\\source\\{ss}')
+            with open(f'C:\\summer_camp\\2019-summer-intern\\lib_self\\pmc\\{c}_report.txt',
+                      encoding='utf-8') as f:
+                line = f.readline()
+                while line:
+                    self.textBrowser.append(line)
+                    line = f.readline()
+            self.textBrowser.moveCursor(self.textBrowser.textCursor().Start)
         except Exception as e:
             print(e)
-    fip = open("C:\summer_camp\\2019-summer-intern\\clientip.txt")
-    server_ip = fip.readline().strip()
-    fip.close()
-    server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
-    while True:
-        cmdType = '2'  # 1:open url; 2:run a exe; 3
-        cmd = ss
-        resstr = send_request(server_config, {'cmdType': cmdType, 'request': cmd, 'time': time.time()})
-        if resstr:
-            pprint.pprint(resstr)
-            break
 
-def sendurl(url):
-    fip = open("C:\summer_camp\\2019-summer-intern\clientip.txt")
-    server_ip = fip.readline().strip()
-    fip.close()
-    server_config = {'address': server_ip, 'port': 9998, 'auth_key': b'A8rhWNHR2p'}
-    while True:
-        cmdType = '1'  # 1:open url; 2:run a exe; 3
-        cmd = f"start microsoft-edge:{url}"  # chrome
-        resstr = send_request(server_config, {'cmdType': cmdType, 'request': cmd, 'time': time.time()})
-        if resstr:
-            pprint.pprint(resstr)
-            break
-
-class SystemTray(QSystemTrayIcon):
-
-    def __init__(self, parent = None):
-        super(SystemTray, self).__init__(parent)
-        self.createActions()
-        self.EdgeAction()
-        self.UploadAction()
-        self.addActions()
-        self.setContextMenu(self.menu)
-
-    def showWidget(self):
-        if w.isVisible():
-            w.hide()
-            self.show_action.setIcon(QIcon(QPixmap("./icons/加号.png")))
+    def showOperator(self):
+        print('op')
+        sender = self.sender()
+        self.stackedWidget.setCurrentIndex(2)
+        print(sender.text())
+        with open('C:\\summer_camp\\2019-summer-intern\\lib_self\\filename.txt') as f:
+            filename=f.readline().split('/')[-1]
+        cla=sender.text().strip()
+        if cla=='分析':
+            self.textBrowser.clear()
+            for n in {'write_action','write_reg','tcp_report'}:
+                with open(f'C:\\summer_camp\\2019-summer-intern\\lib_self\\pmc\\{n}_report.txt',
+                          encoding='UTF-8') as f:
+                    line = f.readline()
+                    self.textBrowser.append(line)
+        elif cla=='文件读写监控':
+            self.readpmc('write_action')
+        elif cla=='注册表监控':
+            self.readpmc('write_reg')
+        elif cla=='网络监控':
+            self.readpmc('tcp_report')
         else:
-            w.showNormal()
-            self.show_action.setIcon(QIcon(QPixmap("./icons/减号.png")))
+            pass
 
-    def exitWidget(self):
-        sys.exit(app.exec_())
-
-    def createActions(self):
-        self.setIcon(QIcon('./icons/sandbox.png'))
-        self.menu = QMenu(QApplication.desktop())
-        self.menu.setStyleSheet("QMenu{text-align:center}")
-        self.show_action = QWidgetAction(self.menu)
-        self.exit_action = QWidgetAction(self.menu)
-
-        self.show_action.triggered.connect(self.showWidget)
-        self.exit_action.triggered.connect(self.exitWidget)
-
-        self.show_action.setIcon(QIcon(QPixmap("./icons/减号.png")))
-        self.show_action.setIconText("显示主界面")
-        self.exit_action.setIcon(QIcon(QPixmap("./icons/关机.png")))
-        self.exit_action.setIconText("退出程序")
-
-    def EdgeAction(self):
-        edge_widget = QWidget()
-        self.edge_action = QWidgetAction(self.menu)
-        self.searchLine = QLineEdit()
-        self.searchLine.setPlaceholderText('search in sandbox')
-        self.searchButton = QPushButton()
-        self.searchButton.setIcon(QIcon(QPixmap("./icons/search.png")))
-        self.searchButton.setObjectName("searchButton")
-        self.searchButton.setIconSize(QSize(18,18))
-        self.searchButton.setStyleSheet("QPushButton{border:2px}")
-        self.searchButton.clicked.connect(self.searchInSanbox)
-        layout = QGridLayout()
-        layout.addWidget(self.searchLine, 1, 1)
-        layout.addWidget(self.searchButton, 1, 0)
-        edge_widget.setLayout(layout)
-        self.edge_action.setDefaultWidget(edge_widget)
+        # self.textBrowser.setText(f"Hello {sender.text()}")
 
 
-    def UploadAction(self):
-        upload_widget = QWidget()
-        self.upload_action = QWidgetAction(self.menu)
-        self.upload_action.setIcon(QIcon(QPixmap("./icons/file.png")))
-        self.upload_action.setIconText("加载文件")
-        self.upload_action.triggered.connect(self.getfile)
-        # self.upload_button = QPushButton("加载文件")
-        # self.upload_button.setIcon(QIcon(QPixmap("./icons/file.png")))
-        # self.upload_button.setIconSize(QSize(15,15))
-        # self.upload_button.setStyleSheet("QPushButton{border:2px}")
-        # self.upload_button.clicked.connect(self.getfile)
-        # layout = QVBoxLayout()
-        # layout.addWidget(self.upload_button)
-        # upload_widget.setLayout(layout)
-        # self.upload_action.setDefaultWidget(upload_widget)
+    def showPidTree(self):
+        print('pid')
+        self.stackedWidget.setCurrentIndex(1)
+        temp = process_analysis_main('C:\\summer_camp\\2019-summer-intern\\lib_self\\pmc\\process-create.pmc.csv')
+        root = QTreeWidgetItem(self.treeWidget)
+        total = node("total", "-1")
+        root.setText(0, "total")
+        root.setText(1, "-1")
+        node_dict = dict()
+        node_dict["-1"] = root
+        for element in temp:
+            DFS(total, element, root, node_dict)
+
+    def showCpuorMen(self):
+        sender = self.sender()
+        if sender.text()=='CPU':
+            self.label.setPixmap(QPixmap(r'..\lib_self\cpuUtil.png'))
+        else:
+            self.label.setPixmap(QPixmap(r'..\lib_self\menUtil.png'))
+        print(sender.text())
 
 
-    def searchInSanbox(self):
-        print('hello')
-        url = self.searchLine.text()
-        if url == '':
-            url = 'https://www.baidu.com'
-        # self.searchLine.setText(None)
-        sendurl(url)
+    def showPerformance(self):
+        self.stackedWidget.setCurrentIndex(0)
+        print('per')
+        self.label.setPixmap(QPixmap(r'..\lib_self\cpuUtil.png'))
 
-    def getfile(self):
-        q_file = QFileDialog()
-        q_file.setFileMode(QFileDialog.AnyFile)
-        q_file.setFilter(QDir.Files)
-        if q_file.exec():
-            filenames = q_file.selectedFiles()
-            print(filenames[0])
-            s=filenames[0]
-            sendfile(s)
+class treeNode():
+    def __init__(self,process_name,pid):
+        self.name = process_name
+        self.pid = str(pid)
+        self.child = []
 
-    def addActions(self):
-        self.menu.addAction(self.edge_action)
-        self.menu.addAction(self.upload_action)
-        self.menu.addAction(self.show_action)
-        self.menu.addAction(self.exit_action)
+def createTree():
+    root = treeNode('cmd.exe', 5008)
+    thirdDeep = treeNode('regsvr.exe', 3368)
+    secondDeep = treeNode('netease.exe', 4876)
+    secondDeep.child = [thirdDeep]
+    root.child = [secondDeep ,treeNode('Procmon.exe', 4976)]
+    return root
 
-class window(QWidget):
-    def __init__(self, parent=None):
-        super(window, self).__init__(parent)
-        ti = SystemTray(self)
-        ti.show()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
-
-    os.system("C:\\summer_camp\\2019-summer-intern\\sb.wsb")
-    os.system("python C:\\summer_camp\\2019-summer-intern\\ipc_server.py")
-
-    print("please wait sandbox running!")
-    app = QApplication(sys.argv)
+    tree = createTree()
+    app = QtWidgets.QApplication(sys.argv)
     w = window()
     w.show()
     sys.exit(app.exec_())

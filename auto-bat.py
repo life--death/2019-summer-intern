@@ -14,6 +14,7 @@ def xml_out(req:str,address:str):
             new_file.write("%PM% /SaveApplyFilter  /SaveAs C:\\" + name + filter_dict[temp] +".csv " + "/Openlog C:\\" + name + ".pml " +  "/quiet /minimized /AcceptEula /LoadConfig C:\\Users\\WDAGUtilityAccount\\Desktop\\"  + filter_dict[temp] + " \n")
             new_file.write("%PM% /minimized /terminate /AcceptEula \n")
     new_file.write("exit")
+
     new_file.close() 
 if __name__ == '__main__':
     xml_out(1111,"C:\\Users\\WDAGUtilityAccount\\Desktop\\netease.exe")
